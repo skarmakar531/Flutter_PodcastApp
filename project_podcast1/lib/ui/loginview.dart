@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
 
 class Loginview extends StatefulWidget{
   final String? title;
@@ -11,28 +10,20 @@ class Loginview extends StatefulWidget{
 
 class _MyLoginState extends State<Loginview>
 {
-  final GlobalKey<FormState> _fkey = GlobalKey();
+  final GlobalKey<FormState> _fkeyLogin = GlobalKey();
 
   String? _email, _password;
 
   void _submitForm()
   {
-    if(_fkey.currentState!.validate())
-    {
-      try{
-        assert(EmailValidator.validate(_email.toString()));
-      
-      _fkey.currentState!.save();
-
+    if(_fkeyLogin.currentState!.validate())
+    {     
+      _fkeyLogin.currentState!.save();
+      _fkeyLogin.currentState!.reset();
       print("Email: $_email, Password: $_password");
       
       Navigator.pop(context);
-      }
-      catch(e)
-      {
-        print(e);
-      }
-    }
+     }
   }
 
   @override
@@ -44,7 +35,7 @@ class _MyLoginState extends State<Loginview>
         backgroundColor: Colors.amberAccent,
       ),
       body: Form(
-        key: _fkey,
+        key: _fkeyLogin,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
