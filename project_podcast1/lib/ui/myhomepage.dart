@@ -120,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage>{
               leading: const Icon(Icons.logout),
               title: const Text('LogOut'),
               onTap: () {
+                _toggle();
                 Navigator.pop(context);
               },
             ),
@@ -146,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title.toString()),
+        title: Text("${widget.title} test"),
         backgroundColor: Colors.amberAccent
       ),
       drawer: _getToggledDrawer(),

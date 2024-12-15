@@ -11,8 +11,8 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  final String _appName = "Podcast App";
-  final String _appTitle = "Podcast & co.";
+  final String _appName = "Hit App";
+  final String _appTitle = "HitApp";
 
   @override
   Widget build(BuildContext context) {

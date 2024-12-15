@@ -1,8 +1,54 @@
 import 'package:flutter/material.dart';
 
-class PodcastHome extends StatelessWidget{
+class PodcastHome extends StatefulWidget{
   final String? title;
   const PodcastHome({Key? k,this.title}):super(key: k);
+
+  @override
+  State<PodcastHome> createState() => _MyPodcastHome();
+}
+
+class Pages extends StatelessWidget
+{
+  final String? text;
+
+  const Pages({Key? k,this.text}):super(key:k);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            text.toString(), 
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold)
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _MyPodcastHome extends State<PodcastHome>
+{
+  final PageController _myController = PageController();
+
+  @override
+  void dispose() {
+    _myController.dispose();
+    super.dispose();
+  }
+
+  final List<Widget> _listPages = <Widget>[
+    Center(child: Pages(text: "Page1",)),
+    Center(child: Pages(text: "Page2",)),
+    Center(child: Pages(text: "Page3",)),
+    Center(child: Pages(text: "Page4",))
+  ];
+
+  int _curr = 0;
 
   @override
   Widget build(BuildContext context)
@@ -10,16 +56,87 @@ class PodcastHome extends StatelessWidget{
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
-        title: Text(title.toString()),
+        title: Text(widget.title.toString()),
         backgroundColor: Colors.amberAccent,
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(3),
+            child: Text(
+              "Page: ${(_curr+1).toString()}/${_listPages.length.toString()}",
+              textScaler: TextScaler.linear(2.0),
+            )
+          ),
+        ],
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/test');
+        child: PageView(
+          controller: _myController,
+          children: [
+
+            ColoredBox(
+              color: Colors.red,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(_myController.hasClients)
+                    {
+                      _myController.animateToPage(
+                        1, 
+                        duration: const Duration(milliseconds: 400), 
+                        curve: Curves.easeInOut
+                      );
+                    }
+                  }, 
+                  child: const Text("Next")
+                ),
+              ),
+            ),
+
+            ColoredBox(
+              color: Colors.blue,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(_myController.hasClients)
+                    {
+                      _myController.animateToPage(
+                        2, 
+                        duration: const Duration(milliseconds: 400), 
+                        curve: Curves.easeInOut
+                      );
+                    }
+                  }, 
+                  child: const Text("Next")
+                ),
+              ),
+            ),
+
+            ColoredBox(
+              color: Colors.yellow,
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(_myController.hasClients)
+                    {
+                      _myController.animateToPage(
+                        0, 
+                        duration: const Duration(milliseconds: 400), 
+                        curve: Curves.easeInOut
+                      );
+                    }
+                  }, 
+                  child: const Text("Previous")
+                ),
+              ),
+            )
+
+          ],
+          onPageChanged: (value) {
+            setState(() {
+              _curr = value;
+            });
           },
-          child: const Text("Button"),
-        ),
+        )
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
@@ -38,7 +155,7 @@ class PodcastHome extends StatelessWidget{
             DrawerHeader(
               decoration: const BoxDecoration(color: Colors.amberAccent),
               child: Center(
-                child: Text(title.toString(),style: const TextStyle(fontSize: 30,fontStyle: FontStyle.italic),),
+                child: Text(widget.title.toString(),style: const TextStyle(fontSize: 30,fontStyle: FontStyle.italic)),
               ),
             ),
 
